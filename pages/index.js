@@ -1,38 +1,36 @@
 import Link from 'next/link'
-import Layout from '../components/layout';
+import Layout from '../components/layout'
 import styles from '../styles/Home.module.scss'
+import useSWR from 'swr'
+import { fetcher } from '../helpers'
 
 export default function Home() {
+  const { data, error } = useSWR('https://app.ticketmaster.com/discovery/v2/events.json?apikey=HN1QS3e5ZB3VZcJEK3xGpoK5HQmtdWUK&geoPoint=u3k41hk9&radius=50&unit=km&size=5', fetcher);
   return (
     <Layout>
       <div className={styles.container}>
         <main className={styles.main}>
           <h1 className={styles.title}>
-          <Link href="/">
-            <a>Welcome to events browser!</a>
-          </Link>
+            <Link href="/">
+              <a>Welcome to events browser!</a>
+            </Link>
           </h1>
-          <div className={styles.grid}>
-            <a href="https://www.marekczyz.xyz" className={styles.card}>
-              <h2>Event nr 1 &rarr;</h2>
-              <p>Find in-depth information about Event nr 1.</p>
-            </a>
-
-            <a href="https://www.marekczyz.xyz" className={styles.card}>
-              <h2>Event nr 2 &rarr;</h2>
-              <p>Learn about Event nr 2 in an interactive way</p>
-            </a>
-
-            <a href="https://www.marekczyz.xyz" className={styles.card}>
-              <h2>Event nr 3 &rarr;</h2>
-              <p>Discover informations about Event nr 3</p>
-            </a>
-
-            <a href="https://www.marekczyz.xyz" className={styles.card}>
-              <h2>Event nr 4 &rarr;</h2>
-              <p>Meet together on Event nr 4</p>
-            </a>
-          </div>
+          {
+            error ? <div>Failed to load:(</div> :
+              !data ? <div>loading...</div> :
+                <div className={styles.grid}>
+                  {
+                    data._embedded.events.map(evt => {
+                      return (
+                        <a href={evt.url} className={styles.card}>
+                          <h2>{evt.name} &rarr;</h2>
+                          <p>To find more info click a link.</p>
+                        </a>
+                      )
+                    })
+                  }
+                </div>
+          }
         </main>
       </div>
     </Layout>
