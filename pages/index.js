@@ -8,17 +8,15 @@ import React, { useState, useEffect } from 'react';
 import Multiselect from 'multiselect-react-dropdown';
 
 export default function Home() {
+  const [pageIndex, setPageIndex] = useState(0);
   const [positioned, setPositioned] = useState(false)
   const [geoPoint, setGeoPoint] = useState('')
   const [classifications, setClassifications] = useState([])
   const [selectedValues, setSelectedValues] = useState([])
-  const { data, error } = useSWR(positioned ? `https://app.ticketmaster.com/discovery/v2/events.json?apikey=HN1QS3e5ZB3VZcJEK3xGpoK5HQmtdWUK&geoPoint=${geoPoint}&classificationId=${selectedValues}&radius=200&unit=km&size=10` : null, fetcher);
-
+  const { data, error } = useSWR(positioned ? `https://app.ticketmaster.com/discovery/v2/events.json?apikey=HN1QS3e5ZB3VZcJEK3xGpoK5HQmtdWUK&page=${pageIndex}&geoPoint=${geoPoint}&classificationId=${selectedValues}&radius=200&unit=km&size=10` : null, fetcher);
+ 
   useEffect(() => {
     setClassifications(getClassifications());
-  }, []);
-
-  useEffect(() => {
     if ('geolocation' in navigator) {
       /* geolocation is available */
       navigator.geolocation.getCurrentPosition((position) => {
@@ -30,10 +28,6 @@ export default function Home() {
     }
     setPositioned(true)
   }, []);
-
-  useEffect(() => {
-    mutate(`https://app.ticketmaster.com/discovery/v2/events.json?apikey=HN1QS3e5ZB3VZcJEK3xGpoK5HQmtdWUK&geoPoint=${geoPoint}&classificationId=${selectedValues}&radius=200&unit=km&size=10`)
-  }, [selectedValues]);
 
   const onSelectHandler = (selectedList, selectedItem) => {
     setSelectedValues(selectedList.map(item => item.id))
@@ -75,6 +69,8 @@ export default function Home() {
                 </div>
           }
         </main>
+        <button onClick={() => setPageIndex(pageIndex - 1 >= 0 ? pageIndex - 1 : 0)}>Previous</button>
+        <button onClick={() => setPageIndex(pageIndex + 1)}>Next</button>
       </div>
     </Layout>
   )
