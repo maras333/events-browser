@@ -1,27 +1,48 @@
 import Link from 'next/link'
 import Layout from '../components/layout'
 import styles from '../styles/Home.module.scss'
-import useSWR from 'swr'
-import { fetcher } from '../helpers'
+import useSWR, { mutate } from 'swr'
+import { fetcher, getClassifications } from '../helpers'
 import geohash from 'ngeohash'
 import React, { useState, useEffect } from 'react';
+import Multiselect from 'multiselect-react-dropdown';
 
 export default function Home() {
   const [positioned, setPositioned] = useState(false)
   const [geoPoint, setGeoPoint] = useState('')
-  const { data, error } = useSWR(positioned ? `https://app.ticketmaster.com/discovery/v2/events.json?apikey=HN1QS3e5ZB3VZcJEK3xGpoK5HQmtdWUK&geoPoint=${geoPoint}&radius=50&unit=km&size=10` : null, fetcher);
+  const [classifications, setClassifications] = useState([])
+  const [selectedValues, setSelectedValues] = useState([])
+  const { data, error } = useSWR(positioned ? `https://app.ticketmaster.com/discovery/v2/events.json?apikey=HN1QS3e5ZB3VZcJEK3xGpoK5HQmtdWUK&geoPoint=${geoPoint}&classificationId=${selectedValues}&radius=200&unit=km&size=10` : null, fetcher);
+
   useEffect(() => {
-    if('geolocation' in navigator) {
+    setClassifications(getClassifications());
+  }, []);
+
+  useEffect(() => {
+    if ('geolocation' in navigator) {
       /* geolocation is available */
       navigator.geolocation.getCurrentPosition((position) => {
         setGeoPoint(geohash.encode(position.coords.latitude, position.coords.longitude));
-      });    
-      setPositioned(true)
+      });
     } else {
       /* geolocation IS NOT available */
-      setPositioned(true)
-    }  
-  }, []);  
+      setGeoPoint(geohash.encode(52.229, 21.012)) // Warsaw location by default
+    }
+    setPositioned(true)
+  }, []);
+
+  useEffect(() => {
+    mutate(`https://app.ticketmaster.com/discovery/v2/events.json?apikey=HN1QS3e5ZB3VZcJEK3xGpoK5HQmtdWUK&geoPoint=${geoPoint}&classificationId=${selectedValues}&radius=200&unit=km&size=10`)
+  }, [selectedValues]);
+
+  const onSelectHandler = (selectedList, selectedItem) => {
+    setSelectedValues(selectedList.map(item => item.id))
+  }
+
+  const onRemoveHandler = (selectedList, removedItem) => {
+    setSelectedValues(selectedList.map(item => item.id))
+  }
+
   return (
     <Layout>
       <div className={styles.container}>
@@ -31,6 +52,12 @@ export default function Home() {
               <a>Welcome to events browser!</a>
             </Link>
           </h1>
+          <Multiselect
+            options={classifications} // Options to display in the dropdown
+            onSelect={onSelectHandler} // Function will trigger on select event
+            onRemove={onRemoveHandler} // Function will trigger on remove event
+            displayValue="name" // Property name to display in the dropdown options
+          />
           {
             error ? <div>Failed to load:(</div> :
               !data ? <div>loading...</div> :
