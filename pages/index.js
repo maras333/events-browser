@@ -1,21 +1,21 @@
 import Layout from '../components/layout'
 import styles from '../styles/Home.module.scss'
-import Router, { useRouter } from 'next/router';
+import Router, { useRouter } from 'next/router'
 import useSWR from 'swr'
 import { fetcher, getClassifications } from '../helpers'
 import geohash from 'ngeohash'
-import React, { useState, useEffect } from 'react';
-import Multiselect from 'multiselect-react-dropdown';
+import React, { useState, useEffect } from 'react'
+import Multiselect from 'multiselect-react-dropdown'
 
 export default function Home() {
-  const router = useRouter();
+  const router = useRouter()
   let page = router.query.page || 0
   const [positioned, setPositioned] = useState(false)
   const [geoPoint, setGeoPoint] = useState('')
   const [classifications, setClassifications] = useState([])
   const [selectedValues, setSelectedValues] = useState([])
   const { data, error } = useSWR(positioned ? `https://app.ticketmaster.com/discovery/v2/events.json?apikey=HN1QS3e5ZB3VZcJEK3xGpoK5HQmtdWUK&page=${page ?? 0}&geoPoint=${geoPoint}&classificationId=${selectedValues}&radius=200&unit=km&size=10` : null, fetcher);
- 
+
   useEffect(() => {
     setClassifications(getClassifications());
     if ('geolocation' in navigator) {
@@ -28,6 +28,10 @@ export default function Home() {
       setGeoPoint(geohash.encode(52.229, 21.012)) // Warsaw location by default
     }
     setPositioned(true)
+  }, []);
+
+  useEffect(function () {
+    localStorage.setItem('name', 'item1')
   }, []);
 
   const onSelectHandler = (selectedList, selectedItem) => {
