@@ -25,7 +25,7 @@ export default function Layout({ children }) {
                 <meta name="og:title" content={siteTitle} />
             </Head>
             <Navbar />
-            <main>{children}</main>
+            {children}
             <Footer />
         </div>
     )

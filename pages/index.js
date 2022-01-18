@@ -1,19 +1,20 @@
-import Link from 'next/link'
 import Layout from '../components/layout'
 import styles from '../styles/Home.module.scss'
-import useSWR, { mutate } from 'swr'
+import Router, { useRouter } from 'next/router';
+import useSWR from 'swr'
 import { fetcher, getClassifications } from '../helpers'
 import geohash from 'ngeohash'
 import React, { useState, useEffect } from 'react';
 import Multiselect from 'multiselect-react-dropdown';
 
 export default function Home() {
-  const [pageIndex, setPageIndex] = useState(0);
+  const router = useRouter();
+  let page = router.query.page || 0
   const [positioned, setPositioned] = useState(false)
   const [geoPoint, setGeoPoint] = useState('')
   const [classifications, setClassifications] = useState([])
   const [selectedValues, setSelectedValues] = useState([])
-  const { data, error } = useSWR(positioned ? `https://app.ticketmaster.com/discovery/v2/events.json?apikey=HN1QS3e5ZB3VZcJEK3xGpoK5HQmtdWUK&page=${pageIndex}&geoPoint=${geoPoint}&classificationId=${selectedValues}&radius=200&unit=km&size=10` : null, fetcher);
+  const { data, error } = useSWR(positioned ? `https://app.ticketmaster.com/discovery/v2/events.json?apikey=HN1QS3e5ZB3VZcJEK3xGpoK5HQmtdWUK&page=${page ?? 0}&geoPoint=${geoPoint}&classificationId=${selectedValues}&radius=200&unit=km&size=10` : null, fetcher);
  
   useEffect(() => {
     setClassifications(getClassifications());
@@ -41,16 +42,17 @@ export default function Home() {
     <Layout>
       <div className={styles.container}>
         <main className={styles.main}>
-          <h1 className={styles.title}>
-            <Link href="/">
-              <a>Welcome to events browser!</a>
-            </Link>
-          </h1>
           <Multiselect
+            placeholder="Click to search for event"
             options={classifications} // Options to display in the dropdown
             onSelect={onSelectHandler} // Function will trigger on select event
             onRemove={onRemoveHandler} // Function will trigger on remove event
             displayValue="name" // Property name to display in the dropdown options
+            style={{
+              searchBox: {
+                width: '350px'
+              }
+            }}
           />
           {
             error ? <div>Failed to load:(</div> :
@@ -69,8 +71,16 @@ export default function Home() {
                 </div>
           }
         </main>
-        <button onClick={() => setPageIndex(pageIndex - 1 >= 0 ? pageIndex - 1 : 0)}>Previous</button>
-        <button onClick={() => setPageIndex(pageIndex + 1)}>Next</button>
+        <div className={styles.paginationButtons}>
+          <button className={styles.button} onClick={() => {
+            let currentPage = parseInt(page) - 1 >= 0 ? parseInt(page) - 1 : 0;
+            Router.push(`/?page=${currentPage}`)
+          }}>Previous</button>
+          <button className={styles.button} onClick={() => {
+            let currentPage = parseInt(page) + 1;
+            Router.push(`/?page=${currentPage}`)
+          }}>Next</button>
+        </div>
       </div>
     </Layout>
   )

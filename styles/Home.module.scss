@@ -1,10 +1,26 @@
 .container {
   padding: 0 2rem;
+  .paginationButtons {
+    display: flex;
+    justify-content: flex-start;
+    .button {
+      display: block;
+      margin: 1rem;
+      padding: 8px;
+      background-color: #9c91ff;
+      border-radius: 5px;
+      font-size: large;
+      border: none;
+      &:hover {
+        cursor: pointer;
+      }
+    }
+  }
 }
 
 .main {
   min-height: 80vh;
-  padding: 4rem 0;
+  padding: 3rem 0;
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -17,7 +33,7 @@
   line-height: 1.15;
   font-size: 4rem;
   a {
-    color: #0070f3;
+    color: #9c91ff;
     text-decoration: none;
     &:hover, &:focus, &:active {
       text-decoration: underline;
@@ -51,6 +67,7 @@
   justify-content: flex-start;
   flex-wrap: wrap;
   max-width: 1200px;
+  padding-top: 2rem;
 }
 
 .card {
@@ -63,8 +80,7 @@
   border-radius: 10px;
   transition: color 0.15s ease, border-color 0.15s ease;
   width: 500px;
-  height: 10rem;
-  max-height: 10rem;
+  min-height: 10rem;
   h2 {
     margin: 0 0 1rem 0;
     font-size: 1.5rem;
@@ -75,14 +91,21 @@
     line-height: 1.5;
   }
   &:hover, &:focus, &:active {
-    color: #0070f3;
-    border-color: #0070f3;   
+    color: #9c91ff;
+    border-color: #9c91ff;   
   }
 }
 
 @media (max-width: 600px) {
+  .container {
+    flex-flow: column;
+    padding: 0 0.5rem;
+    .main {
+      padding: 2rem 0;
+    }
+  }
   .grid {
     width: 100%;
-    flex-direction: column;
+    padding-top: 2rem;
   }
 }
