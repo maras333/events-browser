@@ -1,18 +1,4 @@
-.container {
-    padding: 0 2rem;
-    display: flex;
-    justify-content: center;
-    flex-flow: column;
-    align-items: center; 
-    .link {
-        display: block;
-        font-size: 20px;
-        color: #9c91ff;
-        margin: 2rem 0;
-      }   
-  }
-      
-  .card {
+.card {
     margin: 1rem;
     padding: 1.5rem;
     text-align: left;
@@ -30,6 +16,12 @@
       right: 1rem;
       cursor: pointer;
     }
+    .addCardFavourite {
+      position: absolute;
+      bottom: 0.5rem;
+      right: 1rem;
+      color: #F00;
+    }
     h2 {
       margin: 0 0 1rem 0;
       font-size: 1.5rem;
@@ -44,17 +36,9 @@
       border-color: #9c91ff;   
     }
   }
-  
+
   @media (max-width: 600px) {
-    .container {
-      flex-flow: column;
-      padding: 0 0.5rem;
-      .main {
-        padding: 2rem 0;
-      }
-      .card {
-        width: 100%;
-      }
+    .card {
+      width: 100%;
     }
   }
-  

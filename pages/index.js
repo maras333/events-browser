@@ -7,6 +7,7 @@ import { fetcher, getClassifications } from '../helpers'
 import geohash from 'ngeohash'
 import React, { useState, useEffect } from 'react'
 import Multiselect from 'multiselect-react-dropdown'
+import Card from '../components/card'
 
 export default function Home() {
   const router = useRouter()
@@ -49,7 +50,6 @@ export default function Home() {
     localStorage.setItem('favourites', JSON.stringify({...favourites, [id]: {id, name, url}}))
     setFavouriteItems(JSON.parse(localStorage.getItem("favourites")));
   }
-  console.log(favouriteItems)
   return (
     <Layout>
       <div className={styles.container}>
@@ -79,18 +79,13 @@ export default function Home() {
                   {
                     data?._embedded?.events.map(evt => {
                       return (
-                        <div className={styles.card} key={evt.id}>
-                          <a href={evt.url}>
-                            <h2>{evt.name} &rarr;</h2>
-                            <p>To find more info click a link.</p>
-                          </a>
-                          <span data-id={evt.id}
-                            data-url={evt.url}
-                            data-name={evt.name}
-                            onClick={handleAddToFavourites}
-                            className={favouriteItems.hasOwnProperty(evt.id) ? styles.addCardFavourite : styles.addCard}>Add to favourites
-                          </span>
-                        </div>
+                        <Card
+                          id={evt.id}
+                          url={evt.url}
+                          name={evt.name}
+                          handleFavourites={handleAddToFavourites}
+                          favouriteItems={favouriteItems}
+                        />
                       )
                     }) ?? <div>There is no events</div>
                   }
