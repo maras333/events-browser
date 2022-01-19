@@ -10,7 +10,7 @@ export default function Card({isMainPage, id, url, name, handleFavourites, favou
       </a>
       <span data-id={id}
         data-url={url}
-        data-name={name}
+        data-name={name} 
         onClick={handleFavourites}
         className={isMainPage && favouriteItems.hasOwnProperty(id) ? styles.addCardFavourite : styles.addCard}>{isMainPage ? 'Add to favourites' : 'Remove from favourites'}
       </span>
