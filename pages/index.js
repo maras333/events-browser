@@ -1,6 +1,7 @@
 import Layout from '../components/layout'
 import styles from '../styles/Home.module.scss'
 import Router, { useRouter } from 'next/router'
+import Link from 'next/link'
 import useSWR from 'swr'
 import { fetcher, getClassifications } from '../helpers'
 import geohash from 'ngeohash'
@@ -9,14 +10,16 @@ import Multiselect from 'multiselect-react-dropdown'
 
 export default function Home() {
   const router = useRouter()
+  const [favouriteItems, setFavouriteItems] = useState({});
   let page = router.query.page || 0
   const [positioned, setPositioned] = useState(false)
   const [geoPoint, setGeoPoint] = useState('')
   const [classifications, setClassifications] = useState([])
   const [selectedValues, setSelectedValues] = useState([])
   const { data, error } = useSWR(positioned ? `https://app.ticketmaster.com/discovery/v2/events.json?apikey=HN1QS3e5ZB3VZcJEK3xGpoK5HQmtdWUK&page=${page ?? 0}&geoPoint=${geoPoint}&classificationId=${selectedValues}&radius=200&unit=km&size=10` : null, fetcher);
-
+  
   useEffect(() => {
+    setFavouriteItems(JSON.parse(localStorage.getItem("favourites")));
     setClassifications(getClassifications());
     if ('geolocation' in navigator) {
       /* geolocation is available */
@@ -30,10 +33,6 @@ export default function Home() {
     setPositioned(true)
   }, []);
 
-  useEffect(function () {
-    localStorage.setItem('name', 'item1')
-  }, []);
-
   const onSelectHandler = (selectedList, selectedItem) => {
     setSelectedValues(selectedList.map(item => item.id))
   }
@@ -42,22 +41,37 @@ export default function Home() {
     setSelectedValues(selectedList.map(item => item.id))
   }
 
+  const handleAddToFavourites = (e) => {
+    let favourites = JSON.parse(localStorage.getItem("favourites"))
+    const id = e.target.dataset.id;
+    const name = e.target.dataset.name;
+    const url = e.target.dataset.url;
+    localStorage.setItem('favourites', JSON.stringify({...favourites, [id]: {id, name, url}}))
+    setFavouriteItems(JSON.parse(localStorage.getItem("favourites")));
+  }
+  console.log(favouriteItems)
   return (
     <Layout>
       <div className={styles.container}>
         <main className={styles.main}>
-          <Multiselect
-            placeholder="Click to search for event"
-            options={classifications} // Options to display in the dropdown
-            onSelect={onSelectHandler} // Function will trigger on select event
-            onRemove={onRemoveHandler} // Function will trigger on remove event
-            displayValue="name" // Property name to display in the dropdown options
-            style={{
-              searchBox: {
-                width: '350px'
-              }
-            }}
-          />
+          <div className={styles.options}>
+            <Multiselect
+              placeholder="Click to search for event"
+              options={classifications} // Options to display in the dropdown
+              onSelect={onSelectHandler} // Function will trigger on select event
+              onRemove={onRemoveHandler} // Function will trigger on remove event
+              displayValue="name" // Property name to display in the dropdown options
+              style={{
+                searchBox: {
+                  width: '350px'
+                }
+              }}
+            />
+            <Link href="/favourites">
+              <a className={styles.link}>Go to my favourites events</a>
+            </Link>
+
+          </div>
           {
             error ? <div>Failed to load:(</div> :
               !data ? <div>loading...</div> :
@@ -65,10 +79,18 @@ export default function Home() {
                   {
                     data?._embedded?.events.map(evt => {
                       return (
-                        <a key={evt.id} href={evt.url} className={styles.card}>
-                          <h2>{evt.name} &rarr;</h2>
-                          <p>To find more info click a link.</p>
-                        </a>
+                        <div className={styles.card} key={evt.id}>
+                          <a href={evt.url}>
+                            <h2>{evt.name} &rarr;</h2>
+                            <p>To find more info click a link.</p>
+                          </a>
+                          <span data-id={evt.id}
+                            data-url={evt.url}
+                            data-name={evt.name}
+                            onClick={handleAddToFavourites}
+                            className={favouriteItems.hasOwnProperty(evt.id) ? styles.addCardFavourite : styles.addCard}>Add to favourites
+                          </span>
+                        </div>
                       )
                     }) ?? <div>There is no events</div>
                   }

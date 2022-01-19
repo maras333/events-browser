@@ -26,6 +26,18 @@
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
+  .options {
+    display: flex;
+    width: 100%;
+    justify-content: space-around;
+    flex-flow: row wrap;
+  }
+}
+
+.link {
+  display: block;
+  font-size: 20px;
+  color: #9c91ff;
 }
 
 .title {
@@ -41,24 +53,8 @@
   }
 }
 
-.title,
-.description {
+.title {
   text-align: center;
-}
-
-.description {
-  margin: 4rem 0;
-  line-height: 1.5;
-  font-size: 1.5rem;
-}
-
-.code {
-  background: #fafafa;
-  border-radius: 5px;
-  padding: 0.75rem;
-  font-size: 1.1rem;
-  font-family: Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono,
-    Bitstream Vera Sans Mono, Courier New, monospace;
 }
 
 .grid {
@@ -81,6 +77,19 @@
   transition: color 0.15s ease, border-color 0.15s ease;
   width: 500px;
   min-height: 10rem;
+  position: relative;
+  .addCard {
+    position: absolute;
+    bottom: 0.5rem;
+    right: 1rem;
+    cursor: pointer;
+  }
+  .addCardFavourite {
+    position: absolute;
+    bottom: 0.5rem;
+    right: 1rem;
+    color: #F00;
+  }
   h2 {
     margin: 0 0 1rem 0;
     font-size: 1.5rem;
@@ -107,5 +116,8 @@
   .grid {
     width: 100%;
     padding-top: 2rem;
+  }
+  .link {
+    margin-top: 2rem;
   }
 }
