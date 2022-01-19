@@ -1,7 +1,6 @@
 import styles from './card.module.scss'
 
 export default function Card({isMainPage, id, url, name, handleFavourites, favouriteItems = {}}) {
-
   return (
     <div className={styles.card}>
       <a href={url}>
@@ -12,7 +11,7 @@ export default function Card({isMainPage, id, url, name, handleFavourites, favou
         data-url={url}
         data-name={name} 
         onClick={handleFavourites}
-        className={isMainPage && Object.keys(favouriteItems).length && favouriteItems.hasOwnProperty(id) ? styles.addCardFavourite : styles.addCard}>{isMainPage ? 'Add to favourites' : 'Remove from favourites'}
+        className={isMainPage && favouriteItems && Object.keys(favouriteItems).length && favouriteItems.hasOwnProperty(id) ? styles.addCardFavourite : styles.addCard}>{isMainPage ? 'Add to favourites' : 'Remove from favourites'}
       </span>
     </div>
   )
