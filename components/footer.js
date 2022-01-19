@@ -8,7 +8,7 @@ export default function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
             >
-                Powered by <strong>Siskin's Solutions</strong>
+                Powered by <strong>Siskins Solutions</strong>
             </a>
         </footer>
     )
