@@ -1,6 +1,24 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Events browser
 
-## Getting Started
+This is a [Events browser](https://events-browser.vercel.app/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+
+## Description
+
+The application is a simple event browser that allows users to search through the events based on their location. Moreover, it allows narrowing the search to particular and chosen categories. The application contains the "My favorites" tab, where it's possible to add or remove the event positions. They are saved in the browser under the address /favorites, and available even after the user finished the search. The pagination has been implemented as well.
+
+## Architecture
+
+Next.js was used to build this app.
+
+There are two views in the application Home (for searching event) and Favourites (saved my favourites events)
+
+Application has been implemented as SPA cause content of the service depends the most on location and private preferences of the user, so responses from the server would vary and it would be difficult to cache server site renders in efficient way.
+
+Data are taken from external api [Ticketmaster](https://developer.ticketmaster.com/products-and-docs/apis/getting-started/). Free API limits requests to 5000 per day. 
+
+## Google lighthouse results
+
+## Getting Started And Develop
 
 First, run the development server:
 
@@ -12,23 +30,6 @@ yarn dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+## Deploy 
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
-
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js. Deployed
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+Application was deployed to Vercel
