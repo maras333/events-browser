@@ -27,6 +27,7 @@ export default function Favourites() {
           elements.length ? elements.map(el => {
             return (
               <Card
+                key={items[el].id}
                 id={items[el].id}
                 url={items[el].url}
                 name={items[el].name}

@@ -3,7 +3,7 @@ import styles from './card.module.scss'
 export default function Card({id, url, name, handleFavourites, favouriteItems = null}) {
 
   return (
-    <div className={styles.card} key={id}>
+    <div className={styles.card}>
       <a href={url}>
         <h2>{name} &rarr;</h2>
         <p>To find more info click a link.</p>

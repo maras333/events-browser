@@ -17,8 +17,7 @@ export default function Home() {
   const [geoPoint, setGeoPoint] = useState('')
   const [classifications, setClassifications] = useState([])
   const [selectedValues, setSelectedValues] = useState([])
-  const { data, error } = useSWR(positioned ? `https://app.ticketmaster.com/discovery/v2/events.json?apikey=HN1QS3e5ZB3VZcJEK3xGpoK5HQmtdWUK&page=${page ?? 0}&geoPoint=${geoPoint}&classificationId=${selectedValues}&radius=200&unit=km&size=10` : null, fetcher);
-  
+  const { data, error } = useSWR(positioned ? `https://app.ticketmaster.com/discovery/v2/events.json?apikey=${process.env.NEXT_PUBLIC_API_KEY}&page=${page ?? 0}&geoPoint=${geoPoint}&classificationId=${selectedValues}&radius=200&unit=km&size=10` : null, fetcher);
   useEffect(() => {
     setFavouriteItems(JSON.parse(localStorage.getItem("favourites")));
     setClassifications(getClassifications());
@@ -80,6 +79,7 @@ export default function Home() {
                     data?._embedded?.events.map(evt => {
                       return (
                         <Card
+                          key={evt.id}
                           id={evt.id}
                           url={evt.url}
                           name={evt.name}
