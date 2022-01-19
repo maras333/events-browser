@@ -79,6 +79,7 @@ export default function Home() {
                     data?._embedded?.events.map(evt => {
                       return (
                         <Card
+                          isMainPage={true}
                           key={evt.id}
                           id={evt.id}
                           url={evt.url}
