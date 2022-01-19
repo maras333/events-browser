@@ -18,7 +18,7 @@ export default function Favourites() {
     setItems(JSON.parse(localStorage.getItem("favourites")))
   }
 
-  const elements = Object.keys(items);
+  const elements = Object.keys(items); 
   return (
     <Layout>
       <div className={styles.container}>
