@@ -1,6 +1,6 @@
 import styles from './card.module.scss'
 
-export default function Card({isMainPage, id, url, name, handleFavourites, favouriteItems}) {
+export default function Card({isMainPage, id, url, name, handleFavourites, favouriteItems = {}}) {
 
   return (
     <div className={styles.card}>
