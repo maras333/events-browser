@@ -10,8 +10,9 @@ export default function Layout({ children }) {
         <div className={styles.container}>
             <Head>
                 <link rel="icon" href="/favicon.ico" />
+                <title>{siteTitle}</title>
                 <meta
-                    name="Events browser"
+                    name="description"
                     content="Search for yours favourite events"
                 />
                 <meta
