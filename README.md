@@ -4,7 +4,7 @@ This is a [Events browser](https://events-browser.vercel.app/) project bootstrap
 
 ## Description
 
-The application is a simple event browser that allows users to search through the events based on their location. Moreover, it allows narrowing the search to particular and chosen categories. The application contains the "My favorites" tab, where it's possible to add or remove the event positions. They are saved in the browser under the address /favorites, and available even after the user finished the search. The pagination has been implemented as well.
+The application is a simple event browser that allows users to search through the events based on their location. Moreover, it allows narrowing the search to particular and chosen categories. The application contains the "My favorites" tab, where it's possible to add or remove the event positions. They are saved in the browser under the address /favorites, and available even after the user finished the search. The pagination has been implemented as well (prev and next buttons).
 
 ## Architecture
 
@@ -17,6 +17,11 @@ Application has been implemented as SPA cause content of the service depends the
 Data are taken from external api [Ticketmaster](https://developer.ticketmaster.com/products-and-docs/apis/getting-started/). Free API limits requests to 5000 per day. 
 
 ## Google lighthouse results
+
+- Performance: 92
+- Accessibility: 97
+- Best Practices: 92
+- SEO: 100
 
 ## Getting Started And Develop
 
